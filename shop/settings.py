@@ -72,7 +72,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'shop.wsgi.application'
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.Users'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
