@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import Users
 
 # Create your models here.
 
@@ -29,3 +30,20 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Producto'
         verbose_name_plural = 'Productos'
+
+class Cars(models.Model):
+    cars_user = models.ForeignKey(Users, on_delete=models.CASCADE, null=False)
+    product_cars = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
+    amount = models.IntegerField(null=False)
+    price = models.DecimalField(max_digits=12, decimal_places=2)
+    state = models.CharField(max_length=100, null=False)
+    date_purchase = models.DateField(verbose_name = "fecha de compra", null=False)
+    
+
+
+    def __str__(self):
+        return self.amount
+    
+    class Meta:
+        verbose_name = 'Carro'
+        verbose_name_plural = 'Carros'
