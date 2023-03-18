@@ -24,7 +24,7 @@
                 <td>{{p.description_product}}</td>
                 <td>{{p.price}}</td>
                 <td>{{p.stock}}</td>
-                <td><a href="{% url 'un_producto' prod.id %}" type="button" class="btn btninfo">Ver detalle</a></td>
+                <td><a href="{% url 'ViewProduct' p.id %}" type="button" class="btn btninfo">Ver detalle</a></td>
                 {% comment %} aca debemos crear en la view url 'un_producto' {% endcomment %}
             </tr>
         {% endfor %}

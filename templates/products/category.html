@@ -16,7 +16,7 @@
         {% for c in categorias %}
             <tr>
                 <td>{{c.description}}</td>
-                <td><a href="{% url 'productos' cat.id %}" type="button" class="btn btn-info">Listar
+                <td><a href="{% url 'ViewProduct' c.id %}" type="button" class="btn btn-info">Listar
                 Productos</a></td>
             </tr>
         {% endfor %}
