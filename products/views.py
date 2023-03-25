@@ -18,9 +18,10 @@ def ViewProductCategory(request, idCategory):
     return render(request, 'products/view_products.html', context)
 
 def ViewProduct (request, idProduct, msj = None):
-    ViewProducts = Product.objects.get(id = idProduct)
+    id_produc = int(idProduct)
+    ViewProducts = Product.objects.get(id = id_produc)
     context = {'producto': ViewProducts, 
-            'titulo': 'Detalles del producto: ' + Product.description_product}
+            'titulo': 'Detalles del producto: ' + str(Product.description_product)}
     if msj != None:
         context['mensaje'] = msj
     return render(request, 'products/product_unity.html', context)
