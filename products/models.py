@@ -1,5 +1,6 @@
 from django.db import models
 from users.models import Users
+from users.models import Users
 
 # Create your models here.
 
@@ -32,6 +33,12 @@ class Product(models.Model):
         verbose_name_plural = 'Productos'
 
 class Cars(models.Model):
+    STATE_PRO = {
+        ('Activo', 'Activo'),
+        ('Comprado', 'Comprado'),
+        ('Anulado', 'Anulado'),
+    }
+    
     cars_user = models.ForeignKey(Users, on_delete=models.CASCADE, null=False)
     product_cars = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
     amount = models.IntegerField(null=False)
