@@ -42,14 +42,15 @@ class Cars(models.Model):
     cars_user = models.ForeignKey(Users, on_delete=models.CASCADE, null=False)
     product_cars = models.ForeignKey(Product, on_delete=models.CASCADE, null=False)
     amount = models.IntegerField(null=False)
-    price = models.DecimalField(max_digits=12, decimal_places=2)
-    state = models.CharField(max_length=100, null=False)
+    price = models.DecimalField(max_digits=12, decimal_places=2, null=False, default=0)
+    state = models.CharField(max_length=100, choices=STATE_PRO, default='activo')
     date_purchase = models.DateField(verbose_name = "fecha de compra", null=False)
     
 
 
     def __str__(self):
-        return self.amount
+        return f"{self.amount} x {self.product_cars.name}"
+
     
     class Meta:
         verbose_name = 'Carro'

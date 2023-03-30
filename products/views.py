@@ -1,17 +1,18 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from .models import Users
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
-
-
+from django.utils import timezone
+from django.urls import reverse
 
 import json
 from django.http import JsonResponse
 
 
 # Create your views here.
+
 
 def ViewCategory(request):
     ListCategory = Category.objects.all()
@@ -29,10 +30,10 @@ def ViewProductCategory(request, idCategory):
     return render(request, 'products/view_products.html', context)
 
 def ViewProduct (request, idProduct, msj = None):
-    ViewProducts = Product.objects.get(id = idProduct)
+    ViewProducts = Product.objects.get(id=idProduct)
     context = {'producto': ViewProducts, 
             'titulo': 'Detalles del producto: ' + str(ViewProducts.description_product)}
-    if msj != None:
+    if msj:
         context['mensaje'] = msj
     return render(request, 'products/product_unity.html', context)
 
@@ -46,15 +47,15 @@ def AddShoppingCar(request, idProduct):
     if Existence:
         ProductCar = Product.objects.get(id=idProduct)
         # si no existe en el carrito
-        Existence = Cars.objects.filter(cars_user=RegUser, estado='activo', usuario=RegUser).exists()
+        Existence = Cars.objects.filter(product_cars=ProductCar, state= 'activo', cars_user=RegUser).exists()
         if Existence:
             # instancia un objeto de la clase del carrito
-            Addcar = Cars.objects.get(cars_user=RegUser, estado='activo', usuario=RegUser)
+            Addcar = Cars.objects.get(product_cars=ProductCar, state='activo', cars_user=RegUser)
             # incrementa la cantidad del producto
             Addcar.amount += 1
             Addcar.save()
         else:
-            Addcar = Cars(cars_user=RegUser, usuario=RegUser, ValUnidad=ProductCar.price)
+            Addcar = Cars(product_cars=ProductCar, state='activo', cars_user=RegUser, ValUnit=ProductCar.price)
             Addcar.save()
         msj = 'Producto agregado al carrito'
     else:
@@ -62,8 +63,7 @@ def AddShoppingCar(request, idProduct):
     # redirecciona a la vista del producto
     return ViewProduct(request, idProduct, msj)
 
-
-def ShoppingCarView(request):
+def ShoppingCarView(request, idProduct):
     context = ConsultCar(request)
     return render(request, 'products/shopping_car.html', context)
 
@@ -71,7 +71,7 @@ def ShoppingCarView(request):
 def ConsultCar(request):
     RegUser = request.user
     # leer registro del producto en el carro
-    ListCar = Cars.objects.filter(cars_user=RegUser, estado='activo', usuario=RegUser).values
+    ListCar = Cars.objects.filter(cars_user=RegUser, state='activo', usuario=RegUser).values
     ('product_cars__name',
     'product_cars__price',
     'amount',
@@ -114,7 +114,7 @@ def ConsultCar(request):
 def DeleteProductCar(request, id):
     # consultar el reg y cambiar el estado a inactivo
     RegCar = Cars.objects.get(id=id)
-    RegCar.estado = 'inactivo'
+    RegCar.state = 'inactivo'
     # guardar el registro
     RegCar.save()
     #redireccionar a la vista del carro
@@ -145,7 +145,7 @@ def ChangeProductCar(request):
 
 def Pay(request):
     context = ConsultCar(request)
-    RegUser = request.user 
+    RegUser = request.user
     NameUser = str(RegUser.first_name) + ' ' + str(RegUser.last_name)
     context['nameUser'] = NameUser
     email = RegUser.email
@@ -163,9 +163,9 @@ def Pay(request):
     #fin de modulo de enviar correo
 
     #sacar productos del carrito
-    ListCar = Cars.objects.filter(cars_user=RegUser, estado='activo', usuario=RegUser)
+    ListCar = Cars.objects.filter(cars_user=RegUser, state='activo', usuario=RegUser)
     for car in ListCar:
-        car.estado = 'Comprado'
+        car.state = 'Comprado'
         car.save()
 
     #redireccionar a la vista del carro
