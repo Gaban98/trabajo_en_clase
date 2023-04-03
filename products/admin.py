@@ -15,5 +15,5 @@ admin.site.register(Product, ProductAdmin)
 #--------------------------------------------------------------
 
 class CarsAdmin(admin.ModelAdmin):
-    list_display = ['cars_user', 'product_cars', 'amount', 'price', 'state', 'date_purchase',]
+    list_display = ['cars_user', 'product_cars', 'amount', 'price', 'state',]
 admin.site.register(Cars, CarsAdmin)

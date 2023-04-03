@@ -17,18 +17,18 @@
         </tr>
     </thead>
     <tbody>
-        {% for carro in ListCar %}
+        {% for producto in lista_carros %}
         <tr>
             <th>
-                <input type="number" name="cantidad" id="cantidad_{{ carro.product_cars.id }}" onchange="cambiarCantidad({{ carro.product_cars.id }})" value="{{ carro.amount }}" min="1" style="width: 80px;" datapreciou="{{ carro.price }}">
+                <input type="number" name="cantidad" id="cantidad_{{ producto.producto_cars.id }}" onchange="cambiarCantidad({{ producto.producto_cars.id }})" value="{{ producto.amount }}" min="1" style="width: 80px;" datapreciou="{{ producto.producto_cars.price }}">
             </th>
-            <td><img src="{{ carro.product_cars.image.url }}" alt="{{ carro.product_cars.name }}"></td>
-            <td>{{ carro.product_cars.name }}</td>
-            <td>{{ carro.price }}/{{ carro.product_cars.unit }}</td>
-            <td id="total_{{ carro.product_cars.id }}">${{ carro.amount * carro.price }}</td>
+            <td><img src="{{ producto.producto_cars.imgBig.url }}" alt="{{ producto.producto_cars.name }}"></td>
+            <td>{{ producto.producto_cars.name }}</td>
+            <td>{{ producto.producto_cars.price }}/{{ producto.producto_cars.unit }}</td>
+            <td id="total_{{ producto.producto_cars.id }}">${{ producto.amount}} * {{producto.producto_cars.price }}</td>
             <td>
-                <a href="{% url 'eliminar' carro.id %}" class="btn btn-danger btn-carrito">Eliminar</a>
-                <a href="{% url 'un_producto' carro.product_cars.id %}" class="btn btn-info btncarrito">Detalle</a>
+                <a href="{% url 'eliminar' producto.id %}" class="btn btn-danger btn-carrito">Eliminar</a>
+                <a href="{% url 'un_producto' producto.producto_cars.id %}" class="btn btn-info btncarrito">Detalle</a>
             </td>
         </tr>
         {% endfor %}
@@ -48,15 +48,8 @@
     <h6 id="envio">${{ envio }}</h6>
     <h6><strong id="total">${{ total }}</strong></h6>
 </div>
-<a href="{% url 'pay' %}" class="btn btn-info btn-carrito">Pagar</a>
+<a href="{% url 'Pay' %}" class="btn btn-info btn-carrito">Pagar</a>
 
 </div>
 <!-- FIN BLOQUE PRINCIPAL -->
 {% endblock %}
-
-{% comment %}
-Aquí, en cada iteración del ciclo, estás accediendo a las propiedades del objeto 
-Cars relacionado con cada producto, como el nombre ({{ carro.product_cars.name }}), 
-la imagen ({{ carro.product_cars.image.url }}), la cantidad ({{ carro.amount }}) y el precio ({{ carro.price }}). 
-También estás utilizando el ID del producto ({{ carro.product_cars.id }}) para identificar cada fila y hacer cálculos dinámicos. 
-{% endcomment %}

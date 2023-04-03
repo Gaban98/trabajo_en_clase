@@ -12,6 +12,6 @@ urlpatterns = [
     path('DeleteProductCar/<int:idProduct>', views.DeleteProductCar, name='DeleteProductCar'),
     path('ChangeProductCar/', views.ChangeProductCar, name='ChangeProductCar'),
 
-    path('pay/', views.Pay, name='Pay'),
+    path('Pay/', views.Pay, name='Pay'),
 
 ]

@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.conf import settings
+from django.core.mail import send_mail
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -134,3 +136,20 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#--------------------- EMAIL -------------------------#
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'myminternacional00@gmail.com'
+EMAIL_HOST_PASSWORD = 'eqroqrnzskinujrc'
+EMAIL_USE_TLS = True
+
+# enviar un correo electrónico
+send_mail(
+    'Asunto del correo electrónico',
+    'Cuerpo del correo electrónico',
+    'remitente@example.com',
+    ['destinatario@example.com'],
+    fail_silently=False,
+)

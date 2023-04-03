@@ -50,12 +50,12 @@ def AddShoppingCar(request, idProduct):
         Existence = Cars.objects.filter(product_cars=ProductCar, state= 'activo', cars_user=RegUser).exists()
         if Existence:
             # instancia un objeto de la clase del carrito
-            Addcar = Cars.objects.get(product_cars=ProductCar, state='activo', cars_user=RegUser)
+            Addcar = Cars(product_cars=ProductCar, state='activo', cars_user=RegUser, price=ProductCar.price, amount=1)
             # incrementa la cantidad del producto
             Addcar.amount += 1
             Addcar.save()
         else:
-            Addcar = Cars(product_cars=ProductCar, state='activo', cars_user=RegUser, ValUnit=ProductCar.price)
+            Addcar = Cars(product_cars=ProductCar, state='activo', cars_user=RegUser, price=ProductCar.price)
             Addcar.save()
         msj = 'Producto agregado al carrito'
     else:
@@ -71,30 +71,29 @@ def ShoppingCarView(request, idProduct):
 def ConsultCar(request):
     RegUser = request.user
     # leer registro del producto en el carro
-    ListCar = Cars.objects.filter(cars_user=RegUser, state='activo', usuario=RegUser).values
-    ('product_cars__name',
+    lista_productos = Cars.objects.filter(cars_user=RegUser, state='activo').values(
+    'product_cars__name',
     'product_cars__price',
     'amount',
     'product_cars__imgSmall',
     'product_cars__id',
-    'product_cars__unity')
+    'product_cars__unit')
 
     # renderizar la vista
     listado = []
     subtotal = 0
-    for car in ListCar:
+    for producto in lista_productos:
         reg = {
-            'id': car['product_cars__id'],
-            'amount': car['amount'],
-            'price': car['product_cars__price'],
-            'imgSmall': car['product_cars__imgSmall'],
-            'name': car['product_cars__name'],
-            'unity': car['product_cars__unity'],
-            'total': car['amount'] * car['product_cars__price'],
-            'prodId': car['product_cars__id'],
+            'id': producto['product_cars__id'],
+            'cantidad': producto['amount'],
+            'precio': producto['product_cars__price'],
+            'imagen': producto['product_cars__imgSmall'],
+            'nombre': producto['product_cars__name'],
+            'unidad': producto['product_cars__unit'],
+            'total': producto['amount'] * producto['product_cars__price'],
+            'id_producto': producto['product_cars__id'],
         }
-        subtotal += car['amount'] * car['product_cars__price']
-
+        subtotal += producto['amount'] * producto['product_cars__price']
         listado.append(reg)
     envio = 8000
     if len(listado) == 0:
@@ -153,7 +152,7 @@ def Pay(request):
     #enviar el correo
     mail_subject = 'Pedido de compra'
 
-    body = render_to_string('products/email.html', context)
+    body = render_to_string('products/email.html', context=context)
     to_email = [email] #email del usuario lista los correos
 
     send_email = EmailMessage(mail_subject, body, to=to_email)
