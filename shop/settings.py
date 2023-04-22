@@ -127,9 +127,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR /'static'
 STATICFILES_DIRS = [ 
-    os.path.join(BASE_DIR, 'static')
+    'shop/static',
 ]
 
 # Default primary key field type
@@ -147,9 +147,9 @@ EMAIL_USE_TLS = True
 
 # enviar un correo electrónico
 send_mail(
-    'Asunto del correo electrónico',
-    'Cuerpo del correo electrónico',
-    'remitente@example.com',
-    ['destinatario@example.com'],
+    'Asunto: Esto es un ejemplo de correo',
+    'Aca va el mensaje que se le aplica al correo',
+    'myminternacional00@gmail.com',
+    ['myminternacional00@gmail.com'],
     fail_silently=False,
 )

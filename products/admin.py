@@ -9,11 +9,11 @@ admin.site.register(Category, CategoryAdmin)
 #--------------------------------------------------------------
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'description_product', 'unit', 'stock',]
+    list_display = ['name', 'description_product', 'stock',]
 admin.site.register(Product, ProductAdmin)
 
 #--------------------------------------------------------------
 
 class CarsAdmin(admin.ModelAdmin):
-    list_display = ['cars_user', 'product_cars', 'amount', 'price', 'state',]
+    list_display = ['cars_user', 'product_cars', 'amount', 'state',]
 admin.site.register(Cars, CarsAdmin)

@@ -11,10 +11,6 @@ def login(request):
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
-
-        # Imprimir el valor del token CSRF
-        print("Valor del token CSRF:", request.POST.get('csrfmiddlewaretoken'))
-
         user = auth.authenticate( email=email, password=password)
 
         if user is not None:

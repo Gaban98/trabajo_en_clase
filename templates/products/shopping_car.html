@@ -9,32 +9,34 @@
     <thead>
         <tr>
             <th>Cantidad</th>
-            <th></th>
+            <th>imagen</th>
             <th>Producto</th>
             <th>Precio Unit.</th>
             <th>Total</th>
             <th></th>
+            <th>ejemplo</th>
         </tr>
     </thead>
-    <tbody>
-        {% for producto in lista_carros %}
+<tbody>
+    {% for producto in listado %}
         <tr>
             <th>
-                <input type="number" name="cantidad" id="cantidad_{{ producto.producto_cars.id }}" onchange="cambiarCantidad({{ producto.producto_cars.id }})" value="{{ producto.amount }}" min="1" style="width: 80px;" datapreciou="{{ producto.producto_cars.price }}">
+                <input type="number" name="cantidad" id="cantidad_{{ producto.id }}" onchange="cambiarCantidad({{ producto.id }})" value="{{ producto.cantidad }}" min="1" style="width: 80px;" data-preciou="{{ producto.valorUnit }}">
             </th>
-            <td><img src="{{ producto.producto_cars.imgBig.url }}" alt="{{ producto.producto_cars.name }}"></td>
-            <td>{{ producto.producto_cars.name }}</td>
-            <td>{{ producto.producto_cars.price }}/{{ producto.producto_cars.unit }}</td>
-            <td id="total_{{ producto.producto_cars.id }}">${{ producto.amount}} * {{producto.producto_cars.price }}</td>
+            <td> <img src="iconos/{{producto.imgSmall}}" alt="X"></td>
+            <td>{{ producto.nombre }}</td>
+            <td>{{ producto.precio }}/{{ producto.unidad }}</td>
+            <td id="total_{{ producto.id }}">${{ producto.total }}</td>
             <td>
-                <a href="{% url 'eliminar' producto.id %}" class="btn btn-danger btn-carrito">Eliminar</a>
-                <a href="{% url 'un_producto' producto.producto_cars.id %}" class="btn btn-info btncarrito">Detalle</a>
+                <a href="{% url 'DeleteProductCar' idProduct=producto.id_producto %}" class="btn btn-danger btn-carrito">Eliminar</a>
+                <a href="{% url 'ChangeProductCar' %}" class="btn btn-info btncarrito">Detalle</a>
             </td>
+            <td><img src="{{ producto.imgSmall.url }}" alt="{{ producto.nombre }}"></td>
         </tr>
-        {% endfor %}
-        
-    </tbody>
+    {% endfor %}
+</tbody>
 </table>
+
 <div class="col-6 offset-4 row justify-content-center border-bottom">
 <div class="col-6 text-end">
     <h6><strong> Subtotal</strong></h6>

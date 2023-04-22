@@ -37,8 +37,21 @@ def ViewProduct (request, idProduct, msj = None):
         context['mensaje'] = msj
     return render(request, 'products/product_unity.html', context)
 
-#-----------------CARRITO-----------------
+def ViewsAllProducts (request):
+    #consultar las categorias
+    ListCategory = Category.objects.all().values('id', 'description')
+    #consultar los productos
+    ListProduct = Product.objects.all().values('id', 'name', 'category_product')
+    #renderizar la vista
+    context = {
+        'Categoria': ListCategory,
+        'Productos': ListProduct,
+        'titulo': 'Todos los productos'}
+    
+    return render(request, 'products/viewall.html', context)
 
+#-----------------CARRITO-----------------
+@login_required
 def AddShoppingCar(request, idProduct):
     RegUser = request.user
     msj = None
@@ -63,11 +76,43 @@ def AddShoppingCar(request, idProduct):
     # redirecciona a la vista del producto
     return ViewProduct(request, idProduct, msj)
 
+
 def ShoppingCarView(request, idProduct):
     context = ConsultCar(request)
     return render(request, 'products/shopping_car.html', context)
 
+def DeleteProductCar(request, idProduct):
 
+    # consultar el reg y cambiar el estado a inactivo
+    RegCar = Cars.objects.get(id=idProduct)
+    RegCar.state = 'anulado'
+    # guardar el registro
+    RegCar.save()
+    #redireccionar a la vista del carro
+    return ShoppingCarView(request)
+
+def ChangeProductCar(request):
+    is_ajax = request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+    if is_ajax:
+        if request.method == 'POST':
+            #toma la data enviada por el cliente
+            data = json.load(request)
+            id = data.get('id')
+            cantidad = int(data.get('cantidad'))
+            if cantidad > 0:
+                #consultar el reg y cambiar la cantidad
+                if Cars.objects.filter(id=id).exists():
+                    RegCar = Cars.objects.get(id=id)
+                    RegCar.amount = cantidad
+                    #guardar el registro
+                    RegCar.save()
+            context = ConsultCar(request)    
+            #retornar la respuesta en formato JSON
+            return JsonResponse(context)
+        return JsonResponse({'error': 'No se pudo procesar la solicitud'}, status=400)    
+    else:
+        return ShoppingCarView(request)
+    
 def ConsultCar(request):
     RegUser = request.user
     # leer registro del producto en el carro
@@ -108,37 +153,6 @@ def ConsultCar(request):
         'total': int(subtotal) * 1.19 + envio
     }
     return context
-
-
-def DeleteProductCar(request, id):
-    # consultar el reg y cambiar el estado a inactivo
-    RegCar = Cars.objects.get(id=id)
-    RegCar.state = 'inactivo'
-    # guardar el registro
-    RegCar.save()
-    #redireccionar a la vista del carro
-    return ShoppingCarView(request)
-
-def ChangeProductCar(request):
-    is_ajax = request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
-    if is_ajax:
-        if request.method == 'POST':
-            #toma la data enviada por el cliente
-            data = json.loads(request.body)
-            id = data['id']
-            cantidad = int(data['cantidad'])
-            if cantidad > 0:
-                #consultar el reg y cambiar la cantidad
-                RegCar = Cars.objects.get(id=id)
-                RegCar.amount = cantidad
-                #guardar el registro
-                RegCar.save()
-            context = ConsultCar(request)    
-            #retornar la respuesta en formato JSON
-            return JsonResponse({'status': 'success'})
-        return JsonResponse({'error': 'No se pudo procesar la solicitud'}, status=400)    
-    else:
-        return ShoppingCarView(request)
     
 #-----------------PEDIDOS POR CORREO-----------------
 

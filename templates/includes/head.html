@@ -3,10 +3,10 @@
         <div class="col-8" id="titulo">
             <h1>SUPERMARKET</h1>
                 <div class="col-12" id="nombreUsuario">
-                {% if user.id is None %}
+                    {% if user.id is None %}
                     <h6>visitante</h6>
                 {% else %}
-                    <h6>{{ Users.first_name }} - {{ Users.rol }}</h6>
+                    <h6>{{ user.first_name }} < -- > {{ user.rol }}</h6>
                 {% endif %}
         </div>
     </div>
