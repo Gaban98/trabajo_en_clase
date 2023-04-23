@@ -73,18 +73,8 @@ function getCookie(name) {
     }
     return cookieValue;
 }
-
-function redirectProduct() {
-    var selecbox = document.getElementById("ViewProduct");
-    var selectedValue = selecbox.options[selecbox.selectedIndex].value;
-    if (selectedValue !== "0") {
-        window.location.href = "/product/" + selectedValue;
-    }
-}
 function filtrarCategoria() {
     var categoriaSeleccionada = document.getElementById("categorias").value;
-    console.log(categoriaSeleccionada);
-    console.log("por aca esta pasando ")
     var productos = document.getElementById("productos").getElementsByTagName("option");
 
     for (var i = 0; i < productos.length; i++) {
@@ -94,5 +84,12 @@ function filtrarCategoria() {
         } else {
             productos[i].style.display = "none";
         }
+    }
+}
+
+function redirectProduct() {
+    var selectedValue = document.getElementById("selectbox").value;
+    if (selectedValue !== "0") {
+        window.location.href = "/product/" + selectedValue;
     }
 }

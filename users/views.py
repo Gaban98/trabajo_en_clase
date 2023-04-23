@@ -53,7 +53,6 @@ def Register(request):
                 user = Users.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)
                 user.is_activate = True
                 user.save()
-                print("Esta pasando por aca", user)
                 return render(request, 'users/login.html')
         else:
             return render(request, 'users/register.html', {'form': form})
