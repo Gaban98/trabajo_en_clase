@@ -6,6 +6,8 @@ from .forms import RegisterForm
 from django.shortcuts import render, redirect
 from users.forms import RegisterForm
 
+from django.contrib.auth import update_session_auth_hash, authenticate
+from django.contrib.auth.forms import PasswordChangeForm
 
 def login(request):
     if request.method == 'POST':
@@ -59,3 +61,21 @@ def Register(request):
     else:
         form = RegisterForm()
         return render(request, 'users/register.html', {'form': form})
+
+#--------------------- cambio de contraseña ---------------------
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(user=request.user, data=request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Su contraseña ha sido modificada con exito')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Por favor, intente nuevamente.')
+    else:
+        form = PasswordChangeForm(user=request.user)
+    return render(request, 'users/change_password.html', {'form': form})

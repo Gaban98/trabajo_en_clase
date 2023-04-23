@@ -29,7 +29,7 @@
             <td id="total_{{ producto.id }}">${{ producto.total }}</td>
             <td>
                 <a href="{% url 'DeleteProductCar' producto.id %}" class="btn btn-danger btn-carrito">Eliminar</a>
-                <a href="{% url 'ChangeProductCar' %}" class="btn btn-info btncarrito">Detalle</a>
+                <a href="{% url 'ChangeProductCar' %}" class="btn btn-info btncarrito">Agregar</a>
             </td>
             <td><img src="{{ producto.imgSmall.url }}" alt="{{ producto.nombre }}"></td>
         </tr>

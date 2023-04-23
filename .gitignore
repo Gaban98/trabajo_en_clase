@@ -3,3 +3,5 @@ entorno/
 .vscode
 .media
 media/
+.locale
+locale/
