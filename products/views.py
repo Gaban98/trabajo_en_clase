@@ -9,6 +9,14 @@ from django.urls import reverse
 
 import json
 from django.http import JsonResponse
+import os
+from django import template
+
+register = template.Library()
+
+@register.filter
+def filename(value):
+    return os.path.basename(value)
 
 
 # Create your views here.
@@ -77,19 +85,22 @@ def AddShoppingCar(request, idProduct):
     return ViewProduct(request, idProduct, msj)
 
 
-def ShoppingCarView(request, idProduct):
+def ShoppingCarView(request):
     context = ConsultCar(request)
     return render(request, 'products/shopping_car.html', context)
 
-def DeleteProductCar(request, idProduct):
 
+def DeleteProductCar(request, idProduct):
     # consultar el reg y cambiar el estado a inactivo
+    print (Cars.objects.all())
+    print ("al menos entro a la funcion")
     RegCar = Cars.objects.get(id=idProduct)
     RegCar.state = 'anulado'
     # guardar el registro
     RegCar.save()
     #redireccionar a la vista del carro
     return ShoppingCarView(request)
+
 
 def ChangeProductCar(request):
     is_ajax = request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
@@ -117,9 +128,10 @@ def ConsultCar(request):
     RegUser = request.user
     # leer registro del producto en el carro
     lista_productos = Cars.objects.filter(cars_user=RegUser, state='activo').values(
-    'product_cars__name',
-    'product_cars__price',
+    'id',
+    'price',
     'amount',
+    'product_cars__name',
     'product_cars__imgSmall',
     'product_cars__id',
     'product_cars__unit')
@@ -129,16 +141,16 @@ def ConsultCar(request):
     subtotal = 0
     for producto in lista_productos:
         reg = {
-            'id': producto['product_cars__id'],
+            'id': producto['id'],
             'cantidad': producto['amount'],
-            'precio': producto['product_cars__price'],
+            'precio': producto['price'],
             'imagen': producto['product_cars__imgSmall'],
             'nombre': producto['product_cars__name'],
             'unidad': producto['product_cars__unit'],
-            'total': producto['amount'] * producto['product_cars__price'],
+            'total': producto['amount'] * producto['price'],
             'id_producto': producto['product_cars__id'],
         }
-        subtotal += producto['amount'] * producto['product_cars__price']
+        subtotal += producto['amount'] * producto['price']
         listado.append(reg)
     envio = 8000
     if len(listado) == 0:
@@ -150,10 +162,22 @@ def ConsultCar(request):
         'subtotal': subtotal,
         'iva': int(subtotal) * 0.19,
         'envio': envio,
-        'total': int(subtotal) * 1.19 + envio
+        'total': (int(subtotal) * 1.19) + envio
     }
     return context
     
+
+def AllProductsCategory(request):
+    categories = Category.objects.all().order_by('description')
+    products = Product.objects.all().order_by('name', 'description_product')
+    context = {
+        'categories': categories,
+        'products': products,
+        'titulo': 'Productos por categoría',
+        'os': os,
+    }
+    return render(request, 'products/ViewProductForCategory.html', context)
+
 #-----------------PEDIDOS POR CORREO-----------------
 
 def Pay(request):

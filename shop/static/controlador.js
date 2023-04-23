@@ -73,12 +73,16 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+// esto es para la vista de todos los productos
+
 function filtrarCategoria() {
     var categoriaSeleccionada = document.getElementById("categorias").value;
     var productos = document.getElementById("productos").getElementsByTagName("option");
 
     for (var i = 0; i < productos.length; i++) {
         var categoriaProducto = productos[i].getAttribute("data-categ");
+        console.log("por aca ya paso")
         if (categoriaSeleccionada == 0 || categoriaSeleccionada == categoriaProducto) {
             productos[i].style.display = "block";
         } else {
@@ -88,8 +92,10 @@ function filtrarCategoria() {
 }
 
 function redirectProduct() {
-    var selectedValue = document.getElementById("selectbox").value;
+    var selectedValue = document.getElementById("productos").value;
     if (selectedValue !== "0") {
-        window.location.href = "/product/" + selectedValue;
+        console.log(selectedValue);
+        console.log("por aca esta pasando")
+        window.location.href = "/products/product/" + selectedValue;
     }
 }

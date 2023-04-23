@@ -14,9 +14,10 @@ urlpatterns = [
     path('ViewsAllProducts/', views.ViewsAllProducts, name='ViewsAllProducts'),
     
     path('AddShoppingCar/<int:idProduct>', views.AddShoppingCar, name='AddShoppingCar'),
-    path('ShoppingCarView/<int:idProduct>', views.ShoppingCarView, name='ShoppingCarView'),
+    path('ShoppingCarView/', views.ShoppingCarView, name='ShoppingCarView'),
     path('DeleteProductCar/<int:idProduct>', views.DeleteProductCar, name='DeleteProductCar'),
     path('ChangeProductCar/', views.ChangeProductCar, name='ChangeProductCar'),
+    path('AllProductsCategory/', views.AllProductsCategory, name='AllProductsCategory'),
 
     path('Pay/', views.Pay, name='Pay'),
 

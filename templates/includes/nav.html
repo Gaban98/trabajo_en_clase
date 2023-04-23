@@ -47,7 +47,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'ShoppingCarView' idProduct=1 %}">
+                    <a class="nav-link" href="{% url 'ShoppingCarView' %}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-shopping-cart"
                             width="30" height="30" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                             fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -82,7 +82,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="{% url 'ViewCategory' %}">Categorias</a></li>
-                        <li><a class="dropdown-item" href="#">Productos por Categoria</a></li>
+                        <li><a class="dropdown-item" href="{% url 'AllProductsCategory' %}">Productos por Categoria</a></li>
                         <li><a class="dropdown-item" href="{% url 'ViewsAllProducts' %}">Todos los productos</a></li>
                     </ul>
                 </li>
