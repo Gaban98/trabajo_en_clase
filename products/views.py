@@ -1,22 +1,23 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .models import Users
+from users.models import Users
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.utils import timezone
 from django.urls import reverse
 
+from .forms import *
+from django.conf import settings
+
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 import os
 from django import template
+from io import BytesIO
 
-register = template.Library()
+import qrcode
 
-@register.filter
-def filename(value):
-    return os.path.basename(value)
 
 
 # Create your views here.
@@ -92,8 +93,6 @@ def ShoppingCarView(request):
 
 def DeleteProductCar(request, idProduct):
     # consultar el reg y cambiar el estado a inactivo
-    print (Cars.objects.all())
-    print ("al menos entro a la funcion")
     RegCar = Cars.objects.get(id=idProduct)
     RegCar.state = 'anulado'
     # guardar el registro
@@ -184,7 +183,7 @@ def Pay(request):
     context = ConsultCar(request)
     RegUser = request.user
     NameUser = str(RegUser.first_name) + ' ' + str(RegUser.last_name)
-    context['nameUser'] = NameUser
+    context['nameUser'] = NameUser    
     email = RegUser.email
 
     #enviar el correo
@@ -200,10 +199,12 @@ def Pay(request):
     #fin de modulo de enviar correo
 
     #sacar productos del carrito
-    ListCar = Cars.objects.filter(cars_user=RegUser, state='activo', usuario=RegUser)
+    ListCar = Cars.objects.filter( cars_user=RegUser, state='activo' )
     for car in ListCar:
         car.state = 'Comprado'
         car.save()
 
     #redireccionar a la vista del carro
     return ShoppingCarView(request)
+
+# -------------------- para crear con QR --------------------|

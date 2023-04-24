@@ -5,9 +5,17 @@ from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm
 from django.shortcuts import render, redirect
 from users.forms import RegisterForm
+import qrcode
+from django.http import HttpResponse
 
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import update_session_auth_hash, authenticate
 from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.models import User
+
+from io import BytesIO
+import base64
+
 
 def login(request):
     if request.method == 'POST':
@@ -79,3 +87,6 @@ def change_password(request):
     else:
         form = PasswordChangeForm(user=request.user)
     return render(request, 'users/change_password.html', {'form': form})
+
+#--------- creación por QR ---------
+

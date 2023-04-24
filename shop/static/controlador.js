@@ -82,7 +82,6 @@ function filtrarCategoria() {
 
     for (var i = 0; i < productos.length; i++) {
         var categoriaProducto = productos[i].getAttribute("data-categ");
-        console.log("por aca ya paso")
         if (categoriaSeleccionada == 0 || categoriaSeleccionada == categoriaProducto) {
             productos[i].style.display = "block";
         } else {

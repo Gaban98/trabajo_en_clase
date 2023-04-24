@@ -9,21 +9,19 @@
     <thead>
         <tr>
             <th>Cantidad</th>
-            <th>imagen</th>
+            <th></th>
             <th>Producto</th>
             <th>Precio Unit.</th>
             <th>Total</th>
-            <th></th>
-            <th>ejemplo</th>
         </tr>
     </thead>
 <tbody>
     {% for producto in listado %}
         <tr>
             <th>
-                <input type="number" name="cantidad" id="cantidad_{{ producto.id }}" onchange="cambiarCantidad({{ producto.id }})" value="{{ producto.cantidad }}" min="1" style="width: 80px;" data-preciou="{{ producto.valorUnit }}">
+                <input type="number" name="cantidad" id="cantidad_{{ producto.id }}" onchange="cambiarCantidad({{ producto.id }})" value="{{ producto.cantidad }}" min="1" style="width: 80px;" data-preciou="{{ producto.precio }}">
             </th>
-            <td> <img src="iconos/{{producto.imgSmall}}" alt="X"></td>
+            <td> <img src="media/iconos/{{producto.imgSmall}}" alt="X"></td>
             <td>{{ producto.nombre }}</td>
             <td>{{ producto.precio }}/{{ producto.unidad }}</td>
             <td id="total_{{ producto.id }}">${{ producto.total }}</td>
@@ -31,7 +29,6 @@
                 <a href="{% url 'DeleteProductCar' producto.id %}" class="btn btn-danger btn-carrito">Eliminar</a>
                 <a href="{% url 'ChangeProductCar' %}" class="btn btn-info btncarrito">Agregar</a>
             </td>
-            <td><img src="{{ producto.imgSmall.url }}" alt="{{ producto.nombre }}"></td>
         </tr>
     {% endfor %}
 </tbody>
@@ -55,3 +52,4 @@
 </div>
 <!-- FIN BLOQUE PRINCIPAL -->
 {% endblock %}
+<img><
